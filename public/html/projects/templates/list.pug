@@ -11,7 +11,7 @@ table.table.table-hover
 		th Repository
 		th &nbsp;
 	tbody: tr(ng-repeat="tpl in templates" ng-click="update(tpl)" style="cursor: pointer;")
-		td {{ tpl.alias }}
+		td.samp {{ tpl.alias }}
 		td {{ tpl.playbook }}
 		td {{ sshKeysAssoc[tpl.ssh_key_id].name }}
 		td {{ inventoryAssoc[tpl.inventory_id].name }}
