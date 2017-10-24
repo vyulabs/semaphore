@@ -9,4 +9,7 @@ node_modules
 
 .idea/
 caddyfile
+
+
 cli/semaphore_*
+util/bindata.go
