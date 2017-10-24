@@ -53,16 +53,65 @@ define(['controllers/projects/taskRunner'], function () {
 
 		$scope.hasHiddenTemplates = function() {
 			return getHiddenTemplates().length > 0;
+		};
+
+    function hashCode(str) {
+      var hash = 0;
+      for (var i = 0; i < str.length; i++) {
+        hash = str.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      return hash;
+    }
+
+    function intToRGB(i){
+      var c = (i & 0x00FFFFFF).toString(16).toUpperCase();
+      return "0000000".substring(0, 6 - c.length) + c;
+    }
+
+    function hexToRGBA(hex){
+      var c;
+      if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
+        c= hex.substring(1).split('');
+        if(c.length === 3){
+          c= [c[0], c[0], c[1], c[1], c[2], c[2]];
+        }
+        c= '0x'+c.join('');
+        return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+',0.1)';
+      }
+      throw new Error('Bad Hex');
+    }
+
+    function parseAlias(str) {
+    	var spaceIndex = str.indexOf(' ');
+    	var path = spaceIndex === -1 ? str : str.substring(0, spaceIndex);
+    	var pathParts = path.split('/');
+      var opts = spaceIndex === -1 ? null : str.substring(spaceIndex + 1);
+    	return {
+    		env: pathParts[0],
+				role: pathParts[1] || '',
+				inventory: pathParts[2] || '',
+				options: opts ? opts.split(' ') : []
+			};
 		}
 
 		$scope.reload = function () {
 			$http.get(Project.getURL() + '/templates?sort=alias&order=asc').success(function (templates) {
 				var hiddenTemplates = getHiddenTemplates();
+				var prev;
 				for (var i = 0; i < templates.length; i++) {
 					var template = templates[i];
 					if (hiddenTemplates.indexOf(template.id) !== -1) {
 						template.hidden = true;
 					}
+
+					var alias = parseAlias(template.alias);
+					if (prev && prev.env !== alias.env) {
+						template.isNewEnvironment = true;
+					}
+
+					template.backgroundColor = hexToRGBA('#' + intToRGB(hashCode(alias.env + alias.role)));
+
+					prev = alias;
 				}
 				$scope.templates = templates;
 			});

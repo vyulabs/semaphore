@@ -12,7 +12,12 @@ table.table.table-hover
 		th Environment
 		th Repository
 		th &nbsp;
-	tbody: tr(ng-repeat="tpl in templates" ng-click="update(tpl)" style="cursor: pointer;" ng-if="!tpl.hidden || allShown")
+	tbody: tr.list__row(ng-repeat="tpl in templates"
+						ng-click="update(tpl)"
+						style="cursor: pointer;"
+						ng-if="!tpl.hidden || allShown"
+						ng-class="{'list__row--with-separator' : tpl.isNewEnvironment}"
+						ng-style="{'backgroundColor': tpl.backgroundColor}")
 		td.list__column.list__column--monospaced {{ tpl.alias }}
 		td {{ tpl.playbook }}
 		td {{ sshKeysAssoc[tpl.ssh_key_id].name }}
