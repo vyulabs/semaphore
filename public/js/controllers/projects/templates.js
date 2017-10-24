@@ -109,7 +109,7 @@ define(['controllers/projects/taskRunner'], function () {
 						template.isNewEnvironment = true;
 					}
 
-					template.backgroundColor = hexToRGBA('#' + intToRGB(hashCode(alias.role)));
+					template.backgroundColor = hexToRGBA('#' + intToRGB(hashCode('/' + alias.role)));
 
 					prev = alias;
 				}
