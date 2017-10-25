@@ -405,6 +405,8 @@ func (t *task) getPlaybookArgs() ([]string, error) {
 			return nil, err
 		}
 
+		strings.Replace(t.environment.JSON, "{{ task_number }}", strconv.Itoa(t.task.ID), -1);
+
 		args = append(args, "--extra-vars", t.environment.JSON)
 	}
 
