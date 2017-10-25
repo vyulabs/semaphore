@@ -99,8 +99,8 @@ define(['controllers/projects/taskRunner'], function () {
 				});
 			});
 
-            modal.closed.then(function () {
-				$scope.reload();	
+			modal.closed.then(function () {
+				$scope.reload();
 			});
 		}
 
