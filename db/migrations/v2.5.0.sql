@@ -1,0 +1,1 @@
+ALTER TABLE project__template ADD type varchar(255) AFTER alias;

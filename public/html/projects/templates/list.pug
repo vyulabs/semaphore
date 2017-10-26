@@ -27,4 +27,4 @@ table.table.table-hover
 			button.btn.btn-default.btn-xs(ng-if="!tpl.hidden" ng-click="hideTemplate(tpl); $event.stopPropagation();") hide
 			button.btn.btn-default.btn-xs(ng-if="tpl.hidden" ng-click="showTemplate(tpl); $event.stopPropagation();") show
 			button.btn.btn-info.btn-xs(ng-click="copy(tpl); $event.stopPropagation();" style="margin-left: 5px;") copy
-			button.btn.btn-success.btn-xs(ng-click="run(tpl); $event.stopPropagation();" style="margin-left: 5px;") run
+			button.btn.btn-success.btn-xs(ng-click="run(tpl); $event.stopPropagation();" style="margin-left: 5px;", ng-bind="tpl.type || 'run'")

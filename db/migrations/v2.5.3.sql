@@ -1,0 +1,1 @@
+alter table project__template add `removed` tinyint(1) default 0 comment 'marks as deleted';

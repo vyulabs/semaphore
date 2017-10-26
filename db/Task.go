@@ -14,6 +14,8 @@ type Task struct {
 	// override variables
 	Playbook    string `db:"playbook" json:"playbook"`
 	Environment string `db:"environment" json:"environment"`
+	Description *string `db:"description" json:"description"`
+	BuildTaskID *int `db:"build_task_id" json:"build_task_id"`
 
 	UserID *int `db:"user_id" json:"user_id"`
 

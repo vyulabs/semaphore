@@ -39,21 +39,32 @@
 			.col-sm-6
 				select.form-control(ng-model="tpl.environment_id" ng-options="env.id as env.name disable when env.removed for env in environment")
 					option(value="") -- Select Task Environment --
-		//.form-group
-		//	label.control-label.col-sm-4(style="font-weight: normal;") (*) required fields
-
-		//hr
+		.form-group
+			label.control-label.col-sm-4 Type
+			.col-sm-6
+				select.form-control(ng-model="tpl.type")
+					option(value="") -- Select Type --
+					option(value="build") Build
+					option(value="deploy") Deploy
+		.form-group(ng-if="tpl.type == 'deploy'")
+			label.control-label.col-sm-4 Build Template
+			.col-sm-6
+				select.form-control(ng-model="tpl.build_template_id" ng-options="build.id as build.alias disable when build.removed for build in buildTemplates")
+					option(value="") -- Select Task Environment --
+		.form-group
+			label.control-label.col-sm-4(style="font-weight: normal;") (*) required fields
+		hr
 		.form-group
 			label.control-label.col-sm-4 Extra CLI Arguments
 			.col-sm-6
 				textarea.form-control.monospaced(placeholder='*MUST* be a JSON array! Each argument must be an element of the array, for example: ["-i", "@myinventory.sh", "--private-key=/there/id_rsa", "-vvvv"]' ng-model="tpl.arguments" rows="5")
 
-		//.form-group
-		//	.col-sm-6.col-sm-offset-4
-		//		.checkbox: label
-		//			input(type="checkbox" ng-model="user.admin")
-		//			| Override semaphore arguments
-		//		p.help-block Usually semaphore prepends arguments like `--private-key=/location/id_rsa` to make sure everything goes smoothly. This option is for special needs, where semaphore conflicts with one of your arguments.
+		.form-group
+			.col-sm-6.col-sm-offset-4
+				.checkbox: label
+					input(type="checkbox" ng-model="user.admin")
+					| Override semaphore arguments
+				p.help-block Usually semaphore prepends arguments like `--private-key=/location/id_rsa` to make sure everything goes smoothly. This option is for special needs, where semaphore conflicts with one of your arguments.
 .modal-footer
 	button.btn.btn-default.pull-left(ng-click="$dismiss()") Dismiss
 	button.btn.btn-danger(ng-if="tpl.id" ng-click="$close({ remove: true })") remove

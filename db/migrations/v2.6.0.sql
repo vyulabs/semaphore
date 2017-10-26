@@ -1,0 +1,1 @@
+alter table task add `description` varchar(255) after `environment`;

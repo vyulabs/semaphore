@@ -55,44 +55,44 @@ define(['controllers/projects/taskRunner'], function () {
 			return getHiddenTemplates().length > 0;
 		};
 
-    function hashCode(str) {
-      var hash = 0;
-      for (var i = 0; i < str.length; i++) {
-        hash = str.charCodeAt(i) + ((hash << 5) - hash);
-      }
-      return hash;
-    }
-
-    function intToRGB(i){
-      var c = (i & 0x00FFFFFF).toString(16).toUpperCase();
-      return "0000000".substring(0, 6 - c.length) + c;
-    }
-
-    function hexToRGBA(hex){
-      var c;
-      if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
-        c= hex.substring(1).split('');
-        if(c.length === 3){
-          c= [c[0], c[0], c[1], c[1], c[2], c[2]];
-        }
-        c= '0x'+c.join('');
-        return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+',0.07)';
-      }
-      throw new Error('Bad Hex');
-    }
-
-    function parseAlias(str) {
-    	var spaceIndex = str.indexOf(' ');
-    	var path = spaceIndex === -1 ? str : str.substring(0, spaceIndex);
-    	var pathParts = path.split('/');
-      var opts = spaceIndex === -1 ? null : str.substring(spaceIndex + 1);
-    	return {
-    		env: pathParts[0],
-				role: pathParts[1] || '',
-				inventory: pathParts[2] || '',
-				options: opts ? opts.split(' ') : []
-			};
+		function hashCode(str) {
+			var hash = 0;
+			for (var i = 0; i < str.length; i++) {
+				hash = str.charCodeAt(i) + ((hash << 5) - hash);
+			}
+			return hash;
 		}
+
+		function intToRGB(i){
+			var c = (i & 0x00FFFFFF).toString(16).toUpperCase();
+			return "0000000".substring(0, 6 - c.length) + c;
+		}
+
+		function hexToRGBA(hex){
+		  var c;
+		  if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
+			c= hex.substring(1).split('');
+			if(c.length === 3){
+			  c= [c[0], c[0], c[1], c[1], c[2], c[2]];
+			}
+			c= '0x'+c.join('');
+			return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+',0.07)';
+		  }
+		  throw new Error('Bad Hex');
+		}
+
+		function parseAlias(str) {
+			var spaceIndex = str.indexOf(' ');
+			var path = spaceIndex === -1 ? str : str.substring(0, spaceIndex);
+			var pathParts = path.split('/');
+			var opts = spaceIndex === -1 ? null : str.substring(spaceIndex + 1);
+			return {
+				env: pathParts[0],
+					role: pathParts[1] || '',
+					inventory: pathParts[2] || '',
+					options: opts ? opts.split(' ') : []
+				};
+			}
 
 		$scope.reload = function () {
 			$http.get(Project.getURL() + '/templates?sort=alias&order=asc').success(function (templates) {
@@ -131,6 +131,7 @@ define(['controllers/projects/taskRunner'], function () {
 			scope.inventory = $scope.inventory;
 			scope.repositories = $scope.repos;
 			scope.environment = $scope.environment;
+			scope.buildTemplates = $scope.templates.filter(function(template) { return template.type === 'build'; });
 
 			$modal.open({
 				templateUrl: '/tpl/projects/templates/add.html',
@@ -152,6 +153,7 @@ define(['controllers/projects/taskRunner'], function () {
 			scope.inventory = $scope.inventory;
 			scope.repositories = $scope.repos;
 			scope.environment = $scope.environment;
+			scope.buildTemplates = $scope.templates.filter(function(template) { return template.type === 'build'; });
 
 			var modal = $modal.open({
 				templateUrl: '/tpl/projects/templates/add.html',
@@ -199,7 +201,7 @@ define(['controllers/projects/taskRunner'], function () {
 					scope: scope,
 					size: 'lg'
 				});
-			})
+			});
 		}
 
 		$scope.showAll = function() {

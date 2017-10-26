@@ -1,0 +1,1 @@
+alter table project__template add `build_template_id` int after `type`;
