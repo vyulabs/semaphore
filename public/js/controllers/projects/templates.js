@@ -193,7 +193,7 @@ define(['controllers/projects/taskRunner'], function () {
 						if (!tpl.type) {
 							return [];
 						}
-						return $http.get(Project.getURL() + '/templates/' + tpl.id + '/tasks/last');
+						return $http.get(Project.getURL() + '/templates/' + tpl.build_template_id + '/tasks/last');
 					}
 				}
 			}).result.then(function (task) {
