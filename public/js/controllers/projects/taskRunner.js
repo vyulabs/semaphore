@@ -1,8 +1,10 @@
 define(function () {
 	app.registerController('CreateTaskCtrl', ['$scope', '$http', 'Template', 'Project', 'Builds', function ($scope, $http, Template, Project, Builds) {
 		console.log(Template);
-		$scope.task = {};
 		$scope.builds = Builds ? Builds.data.filter(function(build) { return build.status === 'success'; }) : [];
+		$scope.task = {
+			build_template_id: $scope.builds[0]
+		};
 		$scope.tpl = Template;
 
 		$scope.run = function (task, dryRun) {

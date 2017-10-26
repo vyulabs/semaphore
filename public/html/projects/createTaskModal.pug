@@ -7,9 +7,9 @@
 		//		p.help-block <i>Optional</i> parameters
 
 		.form-group(ng-if="tpl.type == 'build'")
-			label.control-label.col-sm-4 Description
+			label.control-label.col-sm-4 Description*
 			.col-sm-6
-				input.form-control(type="text" placeholder="Enter two words about this build" ng-model="task.description")
+				input.form-control(type="text" placeholder="Enter a few words about this build" ng-model="task.description")
 
 		.form-group(ng-if="tpl.type == 'deploy'")
 			label.control-label.col-sm-4 Build*
