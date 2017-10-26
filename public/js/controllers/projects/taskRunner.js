@@ -2,7 +2,7 @@ define(function () {
 	app.registerController('CreateTaskCtrl', ['$scope', '$http', 'Template', 'Project', 'Builds', function ($scope, $http, Template, Project, Builds) {
 		console.log(Template);
 		$scope.task = {};
-		$scope.builds = Builds.data;
+		$scope.builds = Builds.data.filter(function(build) { return build.status === 'success'; });
 		$scope.tpl = Template;
 
 		$scope.run = function (task, dryRun) {
