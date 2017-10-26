@@ -54,9 +54,15 @@ func GetTasksList(w http.ResponseWriter, r *http.Request, limit uint64) {
 	q := squirrel.Select("task.*, tpl.playbook as tpl_playbook, user.name as user_name, tpl.alias as tpl_alias").
 		From("task").
 		Join("project__template as tpl on task.template_id=tpl.id").
-		LeftJoin("user on task.user_id=user.id").
-		Where("tpl.project_id=?", project.ID).
-		OrderBy("task.created desc")
+		LeftJoin("user on task.user_id=user.id");
+
+	if tpl := context.Get(r, "template"); tpl != nil {
+		q = q.Where("tpl.project_id=? AND task.template_id=?", project.ID, tpl.(db.Template).ID)
+	} else {
+		q = q.Where("tpl.project_id=?", project.ID)
+	}
+
+	q = q.OrderBy("task.created desc")
 
 	if limit > 0 {
 		q = q.Limit(limit)
