@@ -191,7 +191,7 @@ define(['controllers/projects/taskRunner'], function () {
 					},
 					Builds: function() {
 						if (tpl.type !== 'deploy' || !tpl.build_template_id) {
-							return [];
+							return null;
 						}
 						return $http.get(Project.getURL() + '/templates/' + tpl.build_template_id + '/tasks/last');
 					}
