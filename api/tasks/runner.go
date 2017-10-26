@@ -385,8 +385,6 @@ func (t *task) getPlaybookArgs() ([]string, error) {
 	switch t.inventory.Type {
 	case "file":
 		inventory = t.inventory.Inventory
-	case "static":
-		inventory = util.Config.TmpPath + "/inventory_" + strconv.Itoa(t.task.ID)
 	default:
 		inventory = util.Config.TmpPath + "/inventory_" + strconv.Itoa(t.task.ID)
 	}
