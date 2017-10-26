@@ -3,7 +3,7 @@ define(function () {
 		console.log(Template);
 		$scope.builds = Builds ? Builds.data.filter(function(build) { return build.status === 'success'; }) : [];
 		$scope.task = {
-			build_template_id: $scope.builds[0] ? $scope.builds[0].id : undefined
+			build_task_id: $scope.builds[0] ? $scope.builds[0].id : undefined
 		};
 		$scope.tpl = Template;
 
