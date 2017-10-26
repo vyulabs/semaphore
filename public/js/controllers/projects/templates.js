@@ -247,6 +247,7 @@ define(['controllers/projects/taskRunner'], function () {
 			scope.inventory = $scope.inventory;
 			scope.repositories = $scope.repos;
 			scope.environment = $scope.environment;
+			scope.buildTemplates = $scope.templates.filter(function(template) { return template.type === 'build'; });
 
 			$modal.open({
 				templateUrl: '/tpl/projects/templates/add.html',
