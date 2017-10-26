@@ -188,6 +188,12 @@ define(['controllers/projects/taskRunner'], function () {
 					},
 					Template: function () {
 						return tpl;
+					},
+					Builds: function() {
+						if (!tpl.type) {
+							return [];
+						}
+						return $http.get(Project.getURL() + '/templates/' + tpl.id + '/tasks/last');
 					}
 				}
 			}).result.then(function (task) {
