@@ -14,7 +14,7 @@
 		.form-group(ng-if="tpl.type == 'deploy'")
 			label.control-label.col-sm-4 Build*
 			.col-sm-6
-				select.form-control(ng-model="task.build_task_id" ng-options="build.id as build.id + '-' + build.description disable when build.removed for build in builds")
+				select.form-control(ng-model="task.build_task_id" ng-options="build.id as build.id + ' - ' + build.description disable when build.removed for build in builds")
 					option(value="") -- Select Build --
 
 		//.form-group
