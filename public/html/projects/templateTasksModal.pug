@@ -16,6 +16,5 @@
 			br
 			span &nbsp;
 			span.pull-right(ng-if="task.user_name") by {{ task.user_name }}
-		button.btn.btn-default.btn-s(ng-click="reload($lastTasks=false)") Show all tasks
-//.modal-footer
-//	button.btn.btn-default.pull-left(ng-click="$dismiss()") Dismiss
+		.text-center
+			button.btn.btn-default.btn-s(ng-click="reload($lastTasks=false)" margin-top="10px") Show all tasks
