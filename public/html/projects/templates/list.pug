@@ -20,7 +20,7 @@ table.table.table-hover
 		td {{ environmentAssoc[tpl.environment_id].name }}
 		td {{ reposAssoc[tpl.repository_id].name }}
 		td: .pull-right
-			button.btn.btn-primary.btn-xs(ng-if="!tpl.hidden" ng-click="update(tpl); $event.stopPropagation();") edit
+			button.btn.btn-primary.btn-xs(ng-click="update(tpl); $event.stopPropagation();") edit
 			button.btn.btn-default.btn-xs(ng-if="!tpl.hidden" ng-click="hideTemplate(tpl); $event.stopPropagation();" style="margin-left: 5px;") hide
 			button.btn.btn-default.btn-xs(ng-if="tpl.hidden" ng-click="showTemplate(tpl); $event.stopPropagation();" style="margin-left: 5px;") show
 			button.btn.btn-info.btn-xs(ng-click="copy(tpl); $event.stopPropagation();" style="margin-left: 5px;") copy
