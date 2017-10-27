@@ -180,6 +180,27 @@ define(['controllers/projects/taskRunner'], function () {
 			delete template.hidden;
 		}
 
+		$scope.showTasks = function(template) {
+			var scope = $rootScope.$new();
+			$modal.open({
+				templateUrl: '/tpl/projects/templateTasksModal.html',
+				scope: scope,
+				controller: ['Project', 'Template', function(Project, Template) {
+					$http.get(Project.getURL() + '/templates/' + Template.id + '/tasks/last').then(function(tasks) {
+						scope.tasks = tasks.data || [];
+					});
+				}],
+				resolve: {
+					Project: function () {
+						return Project;
+					},
+					Template: function () {
+						return template;
+					}
+				}
+			});
+		}
+
 		$scope.copy = function (template) {
 			var tpl = angular.copy(template);
 			tpl.id = null;

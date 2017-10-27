@@ -12,7 +12,7 @@ table.table.table-hover
 		th Environment
 		th Repository
 		th &nbsp;
-	tbody: tr(ng-repeat="tpl in templates" ng-click="update(tpl)" style="cursor: pointer;" ng-if="!tpl.hidden || allShown")
+	tbody: tr(ng-repeat="tpl in templates" ng-click="showTasks(tpl)" style="cursor: pointer;" ng-if="!tpl.hidden || allShown")
 		td {{ tpl.alias }}
 		td {{ tpl.playbook }}
 		td {{ sshKeysAssoc[tpl.ssh_key_id].name }}
@@ -20,7 +20,8 @@ table.table.table-hover
 		td {{ environmentAssoc[tpl.environment_id].name }}
 		td {{ reposAssoc[tpl.repository_id].name }}
 		td: .pull-right
-			button.btn.btn-default.btn-xs(ng-if="!tpl.hidden" ng-click="hideTemplate(tpl); $event.stopPropagation();") hide
-			button.btn.btn-default.btn-xs(ng-if="tpl.hidden" ng-click="showTemplate(tpl); $event.stopPropagation();") show
+			button.btn.btn-primary.btn-xs(ng-if="!tpl.hidden" ng-click="update(tpl); $event.stopPropagation();") edit
+			button.btn.btn-default.btn-xs(ng-if="!tpl.hidden" ng-click="hideTemplate(tpl); $event.stopPropagation();" style="margin-left: 5px;") hide
+			button.btn.btn-default.btn-xs(ng-if="tpl.hidden" ng-click="showTemplate(tpl); $event.stopPropagation();" style="margin-left: 5px;") show
 			button.btn.btn-info.btn-xs(ng-click="copy(tpl); $event.stopPropagation();" style="margin-left: 5px;") copy
 			button.btn.btn-success.btn-xs(ng-click="run(tpl); $event.stopPropagation();" style="margin-left: 5px;") run
