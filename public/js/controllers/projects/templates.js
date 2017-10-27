@@ -237,9 +237,37 @@ define(['controllers/projects/taskRunner'], function () {
 				templateUrl: '/tpl/projects/templateTasksModal.html',
 				scope: scope,
 				controller: ['Project', 'Template', function(Project, Template) {
-					$http.get(Project.getURL() + '/templates/' + Template.id + '/tasks/last').then(function(tasks) {
-						scope.tasks = tasks.data || [];
-					});
+					scope.reload = function($lastEvents=true) {
+						if ($lastEvents === true) {
+							$tasksURL = '/templates/' + Template.id + '/tasks/last';
+						} else {
+							$tasksURL = '/templates/' + Template.id + '/tasks';
+						}
+
+						$http.get(Project.getURL() + $tasksURL).success(function(tasks) {
+							scope.tasks = tasks;
+
+							scope.tasks.forEach(function(t) {
+								if (t.created) {
+									t.createdFormatted = moment(t.created).format('DD/M/YY HH:mm')
+								}
+								if (t.start) {
+									t.startFormatted = moment(t.start).format('DD/M/YY HH:mm:ss')
+								}
+								if (t.end) {
+									t.endFormatted = moment(t.end).format('DD/M/YY HH:mm:ss')
+								}
+
+								if (!t.start || !t.end) {
+									return;
+								}
+
+								t.duration = moment(t.end).diff(moment(t.start), 'minutes');
+							});
+						});
+					}
+
+					scope.reload();
 				}],
 				resolve: {
 					Project: function () {
@@ -249,6 +277,17 @@ define(['controllers/projects/taskRunner'], function () {
 						return template;
 					}
 				}
+			}).result.then(function(task) {
+				var scope = $rootScope.$new();
+				scope.task = task;
+				scope.project = Project;
+
+				$modal.open({
+					templateUrl: '/tpl/projects/taskModal.html',
+					controller: 'TaskCtrl',
+					scope: scope,
+					size: 'lg'
+				});
 			});
 		}
 
