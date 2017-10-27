@@ -188,12 +188,6 @@ define(['controllers/projects/taskRunner'], function () {
 					},
 					Template: function () {
 						return tpl;
-					},
-					Builds: function() {
-						if (tpl.type !== 'deploy' || !tpl.build_template_id) {
-							return null;
-						}
-						return $http.get(Project.getURL() + '/templates/' + tpl.build_template_id + '/tasks/last');
 					}
 				}
 			}).result.then(function (task) {
@@ -235,6 +229,27 @@ define(['controllers/projects/taskRunner'], function () {
 			}
 			setHiddenTemplates(hiddenTemplates);
 			delete template.hidden;
+		}
+
+		$scope.showTasks = function(template) {
+			var scope = $rootScope.$new();
+			$modal.open({
+				templateUrl: '/tpl/projects/templateTasksModal.html',
+				scope: scope,
+				controller: ['Project', 'Template', function(Project, Template) {
+					$http.get(Project.getURL() + '/templates/' + Template.id + '/tasks/last').then(function(tasks) {
+						scope.tasks = tasks.data || [];
+					});
+				}],
+				resolve: {
+					Project: function () {
+						return Project;
+					},
+					Template: function () {
+						return template;
+					}
+				}
+			});
 		}
 
 		$scope.copy = function (template) {

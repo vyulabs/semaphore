@@ -1,11 +1,17 @@
 define(function () {
-	app.registerController('CreateTaskCtrl', ['$scope', '$http', 'Template', 'Project', 'Builds', function ($scope, $http, Template, Project, Builds) {
+	app.registerController('CreateTaskCtrl', ['$scope', '$http', 'Template', 'Project', function ($scope, $http, Template, Project) {
 		console.log(Template);
-		$scope.builds = Builds ? Builds.data.filter(function(build) { return build.status === 'success'; }) : [];
-		$scope.task = {
-			build_task_id: $scope.builds[0] ? $scope.builds[0].id : undefined
-		};
+		$scope.task = {};
 		$scope.tpl = Template;
+
+
+		if (Template.type === 'deploy' && Template.build_template_id) {
+			$http.get(Project.getURL() + '/templates/' + Template.build_template_id + '/tasks/last').then(function(Builds) {
+				$scope.builds = Builds ? Builds.data.filter(function(build) { return build.status === 'success'; }) : [];
+				$scope.task.build_task_id = $scope.builds[0] ? $scope.builds[0].id : undefined;
+			});
+		}
+
 
 		$scope.run = function (task, dryRun) {
 			task.template_id = Template.id;

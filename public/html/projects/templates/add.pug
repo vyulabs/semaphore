@@ -64,7 +64,7 @@
 				.checkbox: label
 					input(type="checkbox" ng-model="user.admin")
 					| Override semaphore arguments
-				p.help-block Usually semaphore prepends arguments like `--private-key=/location/id_rsa` to make sure everything goes smoothly. This option is for special needs, where semaphore conflicts with one of your arguments.
+				//p.help-block Usually semaphore prepends arguments like `--private-key=/location/id_rsa` to make sure everything goes smoothly. This option is for special needs, where semaphore conflicts with one of your arguments.
 .modal-footer
 	button.btn.btn-default.pull-left(ng-click="$dismiss()") Dismiss
 	button.btn.btn-danger(ng-if="tpl.id" ng-click="$close({ remove: true })") remove
