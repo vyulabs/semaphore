@@ -89,7 +89,7 @@ func GetAllTasks(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetLastTasks(w http.ResponseWriter, r *http.Request) {
-	GetTasksList(w, r, 200)
+	GetTasksList(w, r, 10)
 }
 
 func GetTask(w http.ResponseWriter, r *http.Request) {
