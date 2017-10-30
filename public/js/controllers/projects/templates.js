@@ -279,6 +279,8 @@ define(['controllers/projects/taskRunner'], function () {
 				}
 			}).result.then(function(res) {
 				switch (res.action) {
+					case 'deploy':
+						break;
 					case 'view':
 						var scope = $rootScope.$new();
 						scope.task = res.task;
