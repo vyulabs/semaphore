@@ -17,7 +17,7 @@ table.table.table-hover
 						style="cursor: pointer;"
 						ng-if="!tpl.hidden || allShown"
 						ng-class="{'list__row--with-separator' : tpl.isNewEnvironment}")
-		td.list__column.list__column--monospaced {{ tpl.alias }}
+		td.list__column.monospaced {{ tpl.alias }}
 		td {{ tpl.playbook }}
 		//td {{ sshKeysAssoc[tpl.ssh_key_id].name }}
 		td {{ inventoryAssoc[tpl.inventory_id].name }}
