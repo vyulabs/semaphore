@@ -1,0 +1,1 @@
+alter table project__template add foreign key (`last_success_task_id`) references task(`id`);

@@ -21,6 +21,8 @@ type Template struct {
 	// if true, semaphore will not prepend any arguments to `arguments` like inventory, etc
 	OverrideArguments bool `db:"override_args" json:"override_args"`
 	Removed   bool    `db:"removed" json:"removed"`
+	LastSuccessTaskID *int `db:"last_success_task_id" json:"last_success_task_id"`
+	LastSuccessBuildTaskID *int `db:"last_success_build_task_id" json:"last_success_build_task_id"`
 }
 
 type TemplateSchedule struct {

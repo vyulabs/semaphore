@@ -62,6 +62,15 @@ func (t *task) updateStatus() {
 		t.log("Fatal error with database!")
 		panic(err)
 	}
+
+	if t.task.Status == "success" {
+		_, err := db.Mysql.Exec("update project__template set last_success_task_id =?,  last_success_build_task_id =?", t.task.ID, t.task.BuildTaskID)
+		if err != nil {
+			fmt.Printf("Failed to update task template: %s\n", err.Error())
+			t.log("Fatal error with database!")
+			panic(err)
+		}
+	}
 }
 
 func (t *task) logPipe(scanner *bufio.Scanner) {

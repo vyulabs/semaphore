@@ -1,0 +1,1 @@
+alter table project__template add `last_success_task_id` int;

@@ -55,7 +55,9 @@ func GetTemplates(w http.ResponseWriter, r *http.Request) {
 			"pt.playbook",
 			"pt.arguments",
 			"pt.override_args",
-			"pt.removed").
+			"pt.removed",
+			"pt.last_success_task_id",
+			"pt.last_success_build_task_id").
 			From("project__template pt")
 
 	switch sort {
