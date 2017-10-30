@@ -55,6 +55,17 @@ define(['controllers/projects/taskRunner'], function () {
 			return getHiddenTemplates().length > 0;
 		};
 
+		$scope.getBuildID = function (template) {
+			switch (template.type) {
+				case 'build':
+					return template.last_success_task_id || '?';
+				case 'deploy':
+					return template.last_success_build_task_id || '?';
+				default:
+					return '';
+			}
+		}
+
 		function hashCode(str) {
 			var hash = 0;
 			for (var i = 0; i < str.length; i++) {
