@@ -12,6 +12,12 @@ define(function () {
 			});
 		}
 
+		$scope.getBuildTitle = function (build) {
+			if (build.description) {
+				return build.id + ' - ' + build.description;
+			}
+			return build.id;
+		}
 
 		$scope.run = function (task, dryRun) {
 			task.template_id = Template.id;
