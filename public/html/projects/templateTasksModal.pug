@@ -3,7 +3,7 @@
 .modal-body
 	.alert.alert-info(ng-if="tasks.length == 0", style="margin-bottom: 0;") No tasks
 	ul.nav.nav-pills.nav-stacked.task-history-list(ng-if="tasks.length > 0")
-		li(ng-repeat="task in tasks"): a(ng-click="$close(task)" href="#")
+		li(ng-repeat="task in tasks"): a(ng-click="$close({ action: 'view', task: task })" href="#")
 			.clearfix(style="margin-bottom: 7px;")
 				b.float-left(style="margin-right: 10px;") {{ '#' + task.id }}
 				.float-left.highlighted(style="margin-right: 10px;" ng-class="{ 'bg-warning': task.status == 'waiting', 'bg-danger': task.status == 'error', 'bg-info': task.status == 'running', 'bg-success': task.status == 'success' }") {{ task.status }}
