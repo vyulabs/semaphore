@@ -8,6 +8,7 @@
 				b.float-left(style="margin-right: 10px;") {{ '#' + task.id }}
 				.float-left.highlighted(style="margin-right: 10px;" ng-class="{ 'bg-warning': task.status == 'waiting', 'bg-danger': task.status == 'error', 'bg-info': task.status == 'running', 'bg-success': task.status == 'success' }") {{ task.status }}
 				.float-left(ng-if="task.build_task_id") build {{ task.build_task_id }}
+				.float-left(ng-if="task.description") {{ task.description }}
 			div
 				span(ng-if="!task.start" ng-bind="task.createdFormatted")
 				span(ng-if="task.start" ng-bind="task.startFormatted")
