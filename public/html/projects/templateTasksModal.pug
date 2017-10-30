@@ -10,7 +10,7 @@
 				.float-left(ng-if="task.build_task_id") build {{ task.build_task_id }}
 				.float-left(ng-if="task.description") {{ task.description }}
 				button.btn.btn-success.btn-xs.float-right(ng-if="task.build_task_id && task.status == 'success'" ng-click="$close({ action: 'deploy', build_task_id: task.build_task_id })") deploy
-			div
+			div(style="color: darkgray")
 				span(ng-if="!task.start" ng-bind="task.createdFormatted")
 				span(ng-if="task.start" ng-bind="task.startFormatted")
 				span(ng-if="task.user_name" ng-bind="' by ' + task.user_name")
