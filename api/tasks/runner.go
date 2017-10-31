@@ -294,7 +294,7 @@ func (t *task) installKey(key db.AccessKey) error {
 
 
 func (t *task) checkoutRepository() error {
-	repoName := "repository_" + strconv.Itoa(t.repository.ID)
+	repoName := "repository_" + strconv.Itoa(t.repository.ID) + "_" + strconv.Itoa(t.template.ID)
 	_, err := os.Stat(util.Config.TmpPath + "/" + repoName)
 
 	if err != nil {
@@ -330,7 +330,7 @@ func (t *task) checkoutRepository() error {
 }
 
 func (t *task) getRepositoryCommit() (string, error) {
-	repoName := "repository_" + strconv.Itoa(t.repository.ID)
+	repoName := "repository_" + strconv.Itoa(t.repository.ID) + "_" + strconv.Itoa(t.template.ID)
 	_, err := os.Stat(util.Config.TmpPath + "/" + repoName)
 
 	if err != nil {
@@ -354,7 +354,7 @@ func (t *task) getRepositoryCommit() (string, error) {
 }
 
 func (t *task) updateRepository() error {
-	repoName := "repository_" + strconv.Itoa(t.repository.ID)
+	repoName := "repository_" + strconv.Itoa(t.repository.ID) + "_" + strconv.Itoa(t.template.ID)
 	_, err := os.Stat(util.Config.TmpPath + "/" + repoName)
 
 	cmd := exec.Command("git")
