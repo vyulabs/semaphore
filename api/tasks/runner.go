@@ -92,6 +92,12 @@ func (t *task) prepareRun() {
 		return
 	}
 
+	if err := t.checkoutRepository(); err != nil {
+		t.log("Failed to checkout repository to required commit: " + err.Error())
+		t.fail()
+		return
+	}
+
 	if err := t.installInventory(); err != nil {
 		t.log("Failed to install inventory: " + err.Error())
 		t.fail()
@@ -284,6 +290,67 @@ func (t *task) installKey(key db.AccessKey) error {
 	}
 
 	return ioutil.WriteFile(path, []byte(*key.Secret), 0600)
+}
+
+
+func (t *task) checkoutRepository() error {
+	repoName := "repository_" + strconv.Itoa(t.repository.ID)
+	_, err := os.Stat(util.Config.TmpPath + "/" + repoName)
+
+	if err != nil {
+		return err
+	}
+
+	if t.task.Commit != "" {
+		cmd := exec.Command("git")
+		cmd.Dir = util.Config.TmpPath + "/" + repoName
+
+		gitSSHCommand := "ssh -o StrictHostKeyChecking=no -i " + t.repository.SshKey.GetPath()
+		cmd.Env = t.envVars(util.Config.TmpPath, util.Config.TmpPath, &gitSSHCommand)
+
+		t.log("Checkout repository to commit " + t.task.Commit)
+		cmd.Args = append(cmd.Args, "checkout", t.task.Commit)
+
+		t.logCmd(cmd)
+		return cmd.Run()
+	}
+
+	commit, err := t.getRepositoryCommit()
+	if err != nil {
+		return err
+	}
+
+	if _, err := db.Mysql.Exec("update task set commit=? where id=?", commit, t.task.ID); err != nil {
+		fmt.Printf("Failed to update task status: %s\n", err.Error())
+		return err
+	}
+
+	t.task.Commit = commit
+	return nil
+}
+
+func (t *task) getRepositoryCommit() (string, error) {
+	repoName := "repository_" + strconv.Itoa(t.repository.ID)
+	_, err := os.Stat(util.Config.TmpPath + "/" + repoName)
+
+	if err != nil {
+		return "", err
+	}
+
+	cmd := exec.Command("git")
+	cmd.Dir = util.Config.TmpPath + "/" + repoName
+
+	gitSSHCommand := "ssh -o StrictHostKeyChecking=no -i " + t.repository.SshKey.GetPath()
+	cmd.Env = t.envVars(util.Config.TmpPath, util.Config.TmpPath, &gitSSHCommand)
+
+	t.log("Get last commit hash")
+	cmd.Args = append(cmd.Args, "rev-parse", "HEAD")
+
+	out, err := cmd.Output();
+	if err != nil {
+		return "", err
+	}
+	return strings.Trim(string(out), " \n"), nil
 }
 
 func (t *task) updateRepository() error {

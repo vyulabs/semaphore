@@ -20,6 +20,8 @@ type Task struct {
 	Created time.Time  `db:"created" json:"created"`
 	Start   *time.Time `db:"start" json:"start"`
 	End     *time.Time `db:"end" json:"end"`
+
+	Commit string `db:"commit" json:"commit"`
 }
 
 type TaskOutput struct {
