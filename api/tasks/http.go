@@ -25,12 +25,13 @@ func AddTask(w http.ResponseWriter, r *http.Request) {
 	taskObj.Status = "waiting"
 	taskObj.UserID = &user.ID
 
-	var buildObj db.Task
-	if err := db.Mysql.SelectOne(&buildObj, "select * from task where id=?", taskObj.BuildTaskID); err != nil {
-		panic(err)
+	if taskObj.BuildTaskID != nil {
+		var buildObj db.Task
+		if err := db.Mysql.SelectOne(&buildObj, "select * from task where id=?", taskObj.BuildTaskID); err != nil {
+			panic(err)
+		}
+		taskObj.Commit = buildObj.Commit
 	}
-
-	taskObj.Commit = buildObj.Commit
 
 	if err := db.Mysql.Insert(&taskObj); err != nil {
 		panic(err)
