@@ -394,7 +394,7 @@ func (t *task) runGalaxy() error {
 	}
 
 	cmd := exec.Command("ansible-galaxy", args...)
-	cmd.Dir = util.Config.TmpPath + "/repository_" + strconv.Itoa(t.repository.ID)
+	cmd.Dir = util.Config.TmpPath + "/repository_" + strconv.Itoa(t.repository.ID) + "_" + strconv.Itoa(t.template.ID)
 
 	gitSSHCommand := "ssh -o StrictHostKeyChecking=no -i " + t.repository.SshKey.GetPath()
 	cmd.Env = t.envVars(util.Config.TmpPath, cmd.Dir, &gitSSHCommand)
@@ -415,7 +415,7 @@ func (t *task) listPlaybookHosts() error {
 	args = append(args, "--list-hosts")
 
 	cmd := exec.Command("ansible-playbook", args...)
-	cmd.Dir = util.Config.TmpPath + "/repository_" + strconv.Itoa(t.repository.ID)
+	cmd.Dir = util.Config.TmpPath + "/repository_" + strconv.Itoa(t.repository.ID) + "_" + strconv.Itoa(t.template.ID)
 	cmd.Env = t.envVars(util.Config.TmpPath, cmd.Dir, nil)
 
 	out, err := cmd.Output()
@@ -435,7 +435,7 @@ func (t *task) runPlaybook() error {
 		return err
 	}
 	cmd := exec.Command("ansible-playbook", args...)
-	cmd.Dir = util.Config.TmpPath + "/repository_" + strconv.Itoa(t.repository.ID)
+	cmd.Dir = util.Config.TmpPath + "/repository_" + strconv.Itoa(t.repository.ID) + "_" + strconv.Itoa(t.template.ID)
 	cmd.Env = t.envVars(util.Config.TmpPath, cmd.Dir, nil)
 
 	t.logCmd(cmd)
