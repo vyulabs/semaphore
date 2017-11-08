@@ -10,6 +10,8 @@ import (
 	"github.com/castawaylabs/mulekick"
 	"github.com/gorilla/context"
 	"github.com/masterminds/squirrel"
+	"strings"
+	"database/sql"
 )
 
 func AddTask(w http.ResponseWriter, r *http.Request) {
@@ -34,6 +36,46 @@ func AddTask(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := db.Mysql.Insert(&taskObj); err != nil {
+		panic(err)
+	}
+
+	const prevTaskNumQuery = "select * from task where id<? order by id desc limit 1"
+	var prevTaskObj db.Task
+
+	for sum := 0; sum < 4; sum++ {
+		if err := db.Mysql.SelectOne(&prevTaskObj, prevTaskNumQuery, taskObj.ID); err != nil {
+			if err == sql.ErrNoRows {
+				num := 0
+				prevTaskObj.Num = &num
+			}
+			panic(err)
+		}
+		if prevTaskObj.Num == nil {
+			time.Sleep(100 * time.Millisecond)
+			continue
+		}
+		break
+	}
+
+	if prevTaskObj.Num == nil {
+		panic("Can't resolve number of previous task")
+	}
+
+	taskNum := *prevTaskObj.Num + 1
+	taskObj.Num = &taskNum
+
+	var templateObj db.Template
+	if err := db.Mysql.SelectOne(&templateObj, "select * from project__template where id=?", taskObj.TemplateID); err != nil {
+		panic(err)
+	}
+
+	version := ""
+	if templateObj.VersionTemplate != nil {
+		version = strings.Replace(*templateObj.VersionTemplate, "{{ task_id }}", strconv.Itoa(taskObj.ID), -1)
+		version = strings.Replace(version, "{{ task_num }}", strconv.Itoa(taskNum), -1)
+	}
+	taskObj.Ver = version
+	if _, err := db.Mysql.Update(&taskObj); err != nil {
 		panic(err)
 	}
 

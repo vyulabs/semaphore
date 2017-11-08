@@ -480,7 +480,7 @@ func (t *task) getPlaybookArgs() ([]string, error) {
 			return nil, err
 		}
 
-		envJSON := strings.Replace(t.environment.JSON, "{{ semaphore_task_id }}", strconv.Itoa(t.task.ID), -1);
+		envJSON := strings.Replace(t.environment.JSON, "{{ semaphore_task_id }}", strconv.Itoa(t.task.ID), -1)
 
 		if t.task.BuildTaskID != nil {
 			envJSON = strings.Replace(envJSON, "{{ semaphore_build_task_id }}", strconv.Itoa(*t.task.BuildTaskID), -1);

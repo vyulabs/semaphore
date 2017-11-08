@@ -57,7 +57,8 @@ func GetTemplates(w http.ResponseWriter, r *http.Request) {
 			"pt.override_args",
 			"pt.removed",
 			"pt.last_success_task_id",
-			"pt.last_success_build_task_id").
+			"pt.last_success_build_task_id",
+			"pt.version_template").
 			From("project__template pt")
 
 	switch sort {
@@ -102,7 +103,14 @@ func AddTemplate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res, err := db.Mysql.Exec("insert into project__template set ssh_key_id=?, project_id=?, inventory_id=?, repository_id=?, environment_id=?, alias=?, type=?, build_template_id=?, playbook=?, arguments=?, override_args=?", template.SshKeyID, project.ID, template.InventoryID, template.RepositoryID, template.EnvironmentID, template.Alias, template.Type, template.BuildTemplateID, template.Playbook, template.Arguments, template.OverrideArguments)
+	res, err := db.Mysql.Exec("insert into project__template set ssh_key_id=?, project_id=?, inventory_id=?, " +
+		"repository_id=?, environment_id=?, alias=?, type=?, build_template_id=?, playbook=?, arguments=?, override_args=?, " +
+		"version_template=?",
+			template.SshKeyID, project.ID, template.InventoryID, template.RepositoryID, template.EnvironmentID,
+			template.Alias, template.Type, template.BuildTemplateID, template.Playbook, template.Arguments,
+			template.OverrideArguments, template.VersionTemplate)
+
+
 	if err != nil {
 		panic(err)
 	}
@@ -140,7 +148,12 @@ func UpdateTemplate(w http.ResponseWriter, r *http.Request) {
 		template.Arguments = nil
 	}
 
-	if _, err := db.Mysql.Exec("update project__template set ssh_key_id=?, inventory_id=?, repository_id=?, environment_id=?, alias=?, type=?, build_template_id=?, playbook=?, arguments=?, override_args=? where id=?", template.SshKeyID, template.InventoryID, template.RepositoryID, template.EnvironmentID, template.Alias, template.Type, template.BuildTemplateID, template.Playbook, template.Arguments, template.OverrideArguments, oldTemplate.ID); err != nil {
+	if _, err := db.Mysql.Exec("update project__template set ssh_key_id=?, inventory_id=?, repository_id=?, " +
+		"environment_id=?, alias=?, type=?, build_template_id=?, playbook=?, arguments=?, override_args=?, version_template=? " +
+		"where id=?",
+			template.SshKeyID, template.InventoryID, template.RepositoryID, template.EnvironmentID, template.Alias,
+			template.Type, template.BuildTemplateID, template.Playbook, template.Arguments, template.OverrideArguments,
+			template.VersionTemplate, oldTemplate.ID); err != nil {
 		panic(err)
 	}
 

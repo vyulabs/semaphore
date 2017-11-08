@@ -24,6 +24,8 @@ type Task struct {
 	End     *time.Time `db:"end" json:"end"`
 
 	Commit string `db:"commit" json:"commit"`
+	Ver    string `db:"ver" json:"ver"`
+	Num    *int   `db:"num" json:"num"`
 }
 
 type TaskOutput struct {

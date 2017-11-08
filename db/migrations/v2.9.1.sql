@@ -1,0 +1,1 @@
+ALTER TABLE project__template ADD version_template varchar(255);

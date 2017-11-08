@@ -46,6 +46,10 @@
 					option(value="") -- Select Type --
 					option(value="build") Build
 					option(value="deploy") Deploy
+		.form-group(ng-if="tpl.type == 'build'")
+			label.control-label.col-sm-4 Version Template
+			.col-sm-6
+				input.form-control(type="text" placeholder="1.20.{{ '{' + '{ task_index }' + '}' }}" ng-model="tpl.version_template")
 		.form-group(ng-if="tpl.type == 'deploy'")
 			label.control-label.col-sm-4 Build Template
 			.col-sm-6

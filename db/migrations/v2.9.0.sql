@@ -1,1 +1,1 @@
-ALTER TABLE task ADD version varchar(50) not null default '';
+ALTER TABLE task ADD ver varchar(50) not null default '';
