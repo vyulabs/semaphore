@@ -112,7 +112,7 @@ func GetTasksList(w http.ResponseWriter, r *http.Request, limit uint64) {
 		q = q.Where("tpl.project_id=?", project.ID)
 	}
 
-	q = q.OrderBy("task.created desc")
+	q = q.OrderBy("task.created desc, id desc")
 
 	if limit > 0 {
 		q = q.Limit(limit)
