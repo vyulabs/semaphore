@@ -74,7 +74,7 @@ func AddTask(w http.ResponseWriter, r *http.Request) {
 		version = strings.Replace(*templateObj.VersionTemplate, "{{ task_id }}", strconv.Itoa(taskObj.ID), -1)
 		version = strings.Replace(version, "{{ task_num }}", strconv.Itoa(taskNum), -1)
 	}
-	taskObj.Ver = version
+	taskObj.Ver = &version
 	if _, err := db.Mysql.Update(&taskObj); err != nil {
 		panic(err)
 	}

@@ -1,0 +1,1 @@
+ALTER TABLE project__template ADD last_success_version varchar(50);

@@ -58,7 +58,8 @@ func GetTemplates(w http.ResponseWriter, r *http.Request) {
 			"pt.removed",
 			"pt.last_success_task_id",
 			"pt.last_success_build_task_id",
-			"pt.version_template").
+			"pt.version_template",
+			"pt.last_success_version").
 			From("project__template pt")
 
 	switch sort {

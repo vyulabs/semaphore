@@ -58,9 +58,9 @@ define(['controllers/projects/taskRunner'], function () {
 		$scope.getBuildID = function (template) {
 			switch (template.type) {
 				case 'build':
-					return template.last_success_task_id || '?';
+					return template.last_success_version || template.last_success_task_id || '?';
 				case 'deploy':
-					return template.last_success_build_task_id || '?';
+					return template.last_success_version || template.last_success_build_task_id || '?';
 				default:
 					return '';
 			}

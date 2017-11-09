@@ -24,6 +24,7 @@ type Template struct {
 	LastSuccessTaskID *int `db:"last_success_task_id" json:"last_success_task_id"`
 	LastSuccessBuildTaskID *int `db:"last_success_build_task_id" json:"last_success_build_task_id"`
 	VersionTemplate *string `db:"version_template" json:"version_template"`
+	LastSuccessVersion *string `db:"last_success_version" json:"last_success_version"`
 }
 
 type TemplateSchedule struct {
