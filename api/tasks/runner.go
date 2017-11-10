@@ -482,10 +482,10 @@ func (t *task) getPlaybookArgs() ([]string, error) {
 
 		envJSON := strings.Replace(t.environment.JSON, "{{ semaphore_task_id }}", strconv.Itoa(t.task.ID), -1)
 
-		envJSON = strings.Replace(t.environment.JSON, "{{ semaphore_task_version }}", *t.task.Ver, -1)
+		envJSON = strings.Replace(envJSON, "{{ semaphore_task_version }}", *t.task.Ver, -1)
 
 		if t.task.BuildTaskID != nil {
-			envJSON = strings.Replace(envJSON, "{{ semaphore_build_task_id }}", strconv.Itoa(*t.task.BuildTaskID), -1);
+			envJSON = strings.Replace(envJSON, "{{ semaphore_build_task_id }}", strconv.Itoa(*t.task.BuildTaskID), -1)
 		}
 
 		args = append(args, "--extra-vars", envJSON)
