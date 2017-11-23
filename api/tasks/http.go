@@ -10,9 +10,80 @@ import (
 	"github.com/castawaylabs/mulekick"
 	"github.com/gorilla/context"
 	"github.com/masterminds/squirrel"
-	"strings"
 	"database/sql"
+	"strings"
+	"bytes"
+	"errors"
 )
+
+func resolveDefaultVersion(versionTemplate string, taskID int, taskNum int) string {
+	ret := strings.Replace(versionTemplate, "<next_index>", "0", -1)
+	ret = strings.Replace(ret, "<task_id>", strconv.Itoa(taskID), -1)
+	ret = strings.Replace(ret, "<task_num>", strconv.Itoa(taskNum), -1)
+	return ret
+}
+
+func ResolveNewVersion(currentVersion string, versionTemplate string, taskID int, taskNum int) (string, error) {
+	const text = 0
+	const field = 1
+
+	var ret bytes.Buffer
+	var fieldName bytes.Buffer
+
+	state := text
+
+	k := 0
+
+	for i := 0; i < len(versionTemplate); i++ {
+		switch c := versionTemplate[i]; c {
+		case '<':
+			state = field
+		case '>':
+			state = text
+			switch strings.Trim(fieldName.String(), " ") {
+			case "next_index":
+				var end int
+				if i + 1 < len(versionTemplate) {
+					for v:=k; v < len(currentVersion); v++ {
+						if versionTemplate[i + 1] == currentVersion[v] {
+							end = v
+							break
+						}
+					}
+					if end == len(currentVersion) {
+						return "", errors.New("illegal version format")
+					}
+				} else {
+					end = len(currentVersion)
+				}
+				current, err := strconv.Atoi(currentVersion[k:end])
+				k = end
+				if err != nil {
+					return "", err
+				}
+				ret.WriteString(strconv.Itoa(current + 1))
+			case "task_id":
+				ret.WriteString(strconv.Itoa(taskID))
+			case "task_num":
+				ret.WriteString(strconv.Itoa(taskNum))
+			}
+			state = text
+		default:
+			if state == text {
+				if versionTemplate[i] == currentVersion[k] {
+					ret.WriteByte(versionTemplate[i])
+					k++
+				} else {
+					return resolveDefaultVersion(versionTemplate, taskID, taskNum), nil
+				}
+			} else if state == field {
+				fieldName.WriteByte(versionTemplate[i])
+			}
+		}
+	}
+
+	return ret.String(), nil
+}
 
 func AddTask(w http.ResponseWriter, r *http.Request) {
 	project := context.Get(r, "project").(db.Project)
@@ -69,12 +140,14 @@ func AddTask(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	version := ""
 	if templateObj.VersionTemplate != nil {
-		version = strings.Replace(*templateObj.VersionTemplate, "{{ task_id }}", strconv.Itoa(taskObj.ID), -1)
-		version = strings.Replace(version, "{{ task_num }}", strconv.Itoa(taskNum), -1)
+		//version = strings.Replace(*templateObj.VersionTemplate, "{{ task_id }}", strconv.Itoa(taskObj.ID), -1)
+		//version = strings.Replace(version, "{{ task_num }}", strconv.Itoa(taskNum), -1)
+		if version, err := ResolveNewVersion(*prevTaskObj.Ver, *templateObj.VersionTemplate, taskObj.ID, taskNum); err != nil {
+			taskObj.Ver = &version
+		}
 	}
-	taskObj.Ver = &version
+
 	if _, err := db.Mysql.Update(&taskObj); err != nil {
 		panic(err)
 	}
