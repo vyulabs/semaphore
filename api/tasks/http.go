@@ -160,10 +160,9 @@ func AddTask(w http.ResponseWriter, r *http.Request) {
 		} else {
 			prevVer = ""
 		}
-		if version, err := ResolveNewVersion(prevVer, *templateObj.VersionTemplate, taskObj.ID, taskNum); err != nil {
+		if version, err := ResolveNewVersion(prevVer, *templateObj.VersionTemplate, taskObj.ID, taskNum); err == nil {
 			taskObj.Ver = &version
 		} else {
-			println("Error")
 			panic(err)
 		}
 	}

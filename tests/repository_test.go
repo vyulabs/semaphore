@@ -17,6 +17,12 @@ func (s *MySuite) TestFilePathMatch(c *C) {
 	c.Assert(matched, Equals, true)
 }
 
+func (s *MySuite) TestResolveNewVersionEmpty(c *C) {
+	version, err := tasks.ResolveNewVersion("", "1.4.<next_index>", 12, 32)
+	c.Assert(err, Equals, nil)
+	c.Assert(version, Equals, "1.4.0")
+}
+
 func (s *MySuite) TestResolveNewVersion(c *C) {
 	version, err := tasks.ResolveNewVersion("1.2.3", "1.<task_id>.<task_num>", 12, 32)
 	c.Assert(err, Equals, nil)
