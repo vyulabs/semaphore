@@ -24,6 +24,10 @@ func resolveDefaultVersion(versionTemplate string, taskID int, taskNum int) stri
 }
 
 func ResolveNewVersion(currentVersion string, versionTemplate string, taskID int, taskNum int) (string, error) {
+	if currentVersion  == "" {
+		return resolveDefaultVersion(versionTemplate, taskID, taskNum), nil
+	}
+
 	const text = 0
 	const field = 1
 
@@ -144,7 +148,13 @@ func AddTask(w http.ResponseWriter, r *http.Request) {
 	if templateObj.VersionTemplate != nil {
 		//version = strings.Replace(*templateObj.VersionTemplate, "{{ task_id }}", strconv.Itoa(taskObj.ID), -1)
 		//version = strings.Replace(version, "{{ task_num }}", strconv.Itoa(taskNum), -1)
-		if version, err := ResolveNewVersion(*prevTaskObj.Ver, *templateObj.VersionTemplate, taskObj.ID, taskNum); err != nil {
+		var prevVer string
+		if prevTaskObj.Ver != nil {
+			prevVer = *prevTaskObj.Ver
+		} else {
+			prevVer = ""
+		}
+		if version, err := ResolveNewVersion(prevVer, *templateObj.VersionTemplate, taskObj.ID, taskNum); err != nil {
 			taskObj.Ver = &version
 		}
 	}
