@@ -16,8 +16,9 @@ define(function () {
 			var ret = '';
 			if (build.ver) {
 				ret += build.ver;
+			} else {
+				ret += "#" + build.id;
 			}
-			ret += "#" + build.id;
 			if (build.description) {
 				ret += ' - ' + build.description;
 			}
