@@ -128,8 +128,9 @@ func AddTask(w http.ResponseWriter, r *http.Request) {
 			if err == sql.ErrNoRows {
 				num := 0
 				prevTaskObj.Num = &num
+			} else {
+				panic(err)
 			}
-			panic(err)
 		}
 		if prevTaskObj.Num == nil {
 			time.Sleep(100 * time.Millisecond)
