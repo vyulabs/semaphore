@@ -25,6 +25,8 @@ func resolveDefaultVersion(versionTemplate string, taskID int, taskNum int) stri
 }
 
 func ResolveNewVersion(currentVersion string, versionTemplate string, taskID int, taskNum int) (string, error) {
+	fmt.Println("currentVersion: " + currentVersion)
+	fmt.Println("versionTemplate: " + versionTemplate)
 	if currentVersion  == "" {
 		return resolveDefaultVersion(versionTemplate, taskID, taskNum), nil
 	}
