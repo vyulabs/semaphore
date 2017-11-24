@@ -56,14 +56,30 @@ define(['controllers/projects/taskRunner'], function () {
 		};
 
 		$scope.getBuildID = function (template) {
+			var ret;
+
 			switch (template.type) {
 				case 'build':
-					return template.last_success_version || template.last_success_task_id || '?';
+					if (template.last_success_version) {
+						ret = template.last_success_version;
+					} else if (template.last_success_task_id) {
+						ret = '#' + template.last_success_task_id;
+					}
+					break;
 				case 'deploy':
-					return template.last_success_version || template.last_success_build_task_id || '?';
+					if (template.last_success_version) {
+						ret = template.last_success_version;
+					} else if (template.last_success_build_task_id) {
+						ret = '#' + template.last_success_build_task_id;
+					}
+					break;
 				default:
-					return '';
+					ret = '';
 			}
+			if (ret == null) {
+				ret = '?';
+			}
+			return ret;
 		}
 
 		function hashCode(str) {
