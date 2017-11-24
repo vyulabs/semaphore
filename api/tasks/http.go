@@ -14,6 +14,7 @@ import (
 	"strings"
 	"bytes"
 	"errors"
+	"fmt"
 )
 
 func resolveDefaultVersion(versionTemplate string, taskID int, taskNum int) string {
@@ -55,6 +56,7 @@ func ResolveNewVersion(currentVersion string, versionTemplate string, taskID int
 						}
 					}
 					if end == len(currentVersion) {
+						fmt.Println("illegal version format " + currentVersion)
 						return "", errors.New("illegal version format")
 					}
 				} else {
