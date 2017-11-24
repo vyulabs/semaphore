@@ -265,6 +265,15 @@ define(['controllers/projects/taskRunner'], function () {
 				templateUrl: '/tpl/projects/templateTasksModal.html',
 				scope: scope,
 				controller: ['Project', 'Template', function(Project, Template) {
+					scope.getTaskVersion = function(task) {
+						if (task.ver) {
+							return 'version ' + task.ver;
+						} else if (task.build_task_id) {
+							return 'build #' + task.build_task_id;
+						}
+						return '';
+					};
+
 					scope.reload = function($lastEvents=true) {
 						if ($lastEvents === true) {
 							$tasksURL = '/templates/' + Template.id + '/tasks/last';
@@ -277,13 +286,13 @@ define(['controllers/projects/taskRunner'], function () {
 
 							scope.tasks.forEach(function(t) {
 								if (t.created) {
-									t.createdFormatted = moment(t.created).format('DD/M/YY HH:mm')
+									t.createdFormatted = moment(t.created).format('DD/M/YY HH:mm');
 								}
 								if (t.start) {
-									t.startFormatted = moment(t.start).format('DD/M/YY HH:mm:ss')
+									t.startFormatted = moment(t.start).format('DD/M/YY HH:mm:ss');
 								}
 								if (t.end) {
-									t.endFormatted = moment(t.end).format('DD/M/YY HH:mm:ss')
+									t.endFormatted = moment(t.end).format('DD/M/YY HH:mm:ss');
 								}
 
 								if (!t.start || !t.end) {
