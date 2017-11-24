@@ -113,6 +113,7 @@ func AddTask(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 		taskObj.Commit = buildObj.Commit
+		taskObj.Ver = buildObj.Ver
 	}
 
 	if err := db.Mysql.Insert(&taskObj); err != nil {
