@@ -25,8 +25,8 @@ func resolveDefaultVersion(versionTemplate string, taskID int, taskNum int) stri
 }
 
 func ResolveNewVersion(currentVersion string, versionTemplate string, taskID int, taskNum int) (string, error) {
-	fmt.Println("currentVersion: " + currentVersion)
-	fmt.Println("versionTemplate: " + versionTemplate)
+	fmt.Println("currentVersion: '" + currentVersion + "'")
+	fmt.Println("versionTemplate: '" + versionTemplate + "'")
 	if currentVersion  == "" {
 		return resolveDefaultVersion(versionTemplate, taskID, taskNum), nil
 	}
@@ -163,7 +163,7 @@ func AddTask(w http.ResponseWriter, r *http.Request) {
 		if version, err := ResolveNewVersion(prevVer, *templateObj.VersionTemplate, taskObj.ID, taskNum); err != nil {
 			taskObj.Ver = &version
 		} else {
-			println(err)
+			println("Error")
 			panic(err)
 		}
 	}
