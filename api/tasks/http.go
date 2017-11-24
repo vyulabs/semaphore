@@ -134,7 +134,9 @@ func AddTask(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if prevTaskObj.Num == nil {
-		panic("Can't resolve number of previous task")
+		num := 0
+		prevTaskObj.Num = &num
+		//panic("Can't resolve number of previous task")
 	}
 
 	taskNum := *prevTaskObj.Num + 1
