@@ -120,11 +120,11 @@ func AddTask(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	const prevTaskNumQuery = "select * from task where id<? order by id desc limit 1"
+	const prevTaskNumQuery = "select * from task where id<? and template_id=? order by id desc limit 1"
 	var prevTaskObj db.Task
 
 	for sum := 0; sum < 4; sum++ {
-		if err := db.Mysql.SelectOne(&prevTaskObj, prevTaskNumQuery, taskObj.ID); err != nil {
+		if err := db.Mysql.SelectOne(&prevTaskObj, prevTaskNumQuery, taskObj.ID, taskObj.TemplateID); err != nil {
 			if err == sql.ErrNoRows {
 				num := 0
 				prevTaskObj.Num = &num
