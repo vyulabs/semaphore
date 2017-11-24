@@ -34,3 +34,9 @@ func (s *MySuite) TestResolveNewVersionWithNextIndex(c *C) {
 	c.Assert(err, Equals, nil)
 	c.Assert(version, Equals, "1.11.44")
 }
+
+func (s *MySuite) TestResolveNewVersionAll(c *C) {
+	version, err := tasks.ResolveNewVersion("1.30.20#10", "1.30.<next_index>#<task_id>", 12, 32)
+	c.Assert(err, Equals, nil)
+	c.Assert(version, Equals, "1.30.21#12")
+}

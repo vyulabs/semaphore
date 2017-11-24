@@ -67,6 +67,7 @@ func ResolveNewVersion(currentVersion string, versionTemplate string, taskID int
 			case "task_num":
 				ret.WriteString(strconv.Itoa(taskNum))
 			}
+			fieldName.Reset()
 			state = text
 		default:
 			if state == text {
