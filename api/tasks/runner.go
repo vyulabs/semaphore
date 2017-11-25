@@ -174,6 +174,8 @@ func (t *task) run() {
 
 	t.task.Status = "success"
 	t.updateStatus()
+	t.sendMailAlert()
+	t.sendTelegramAlert()
 }
 
 func (t *task) fetch(errMsg string, ptr interface{}, query string, args ...interface{}) error {
