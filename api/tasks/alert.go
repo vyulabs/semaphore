@@ -15,7 +15,7 @@ const emailTemplate = `Subject: Task '{{ .Alias }}' failed
 Task {{ .TaskID }} with template '{{ .Alias }}' has failed!
 Task log: <a href='{{ .TaskURL }}'>{{ .TaskURL }}</a>`
 
-const telegramTemplate = `{"chat_id": "{{ .ChatID }}","parse_mode":"HTML","text":"<code>{{ .Alias }}</code>\n#{{ .TaskID }} <b>{{ .TaskResult }}</b> {{ .TaskVersion }} {{ .TaskDescription }}\nby{{ .Author }}"}`
+const telegramTemplate = `{"chat_id": "{{ .ChatID }}","parse_mode":"HTML","text":"<code>{{ .Alias }}</code>\n#{{ .TaskID }} <b>{{ .TaskResult }}</b> <code>{{ .TaskVersion }}</code> {{ .TaskDescription }}\nby {{ .Author }}"}`
 type Alert struct {
 	TaskID  string
 	Alias   string
