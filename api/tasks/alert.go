@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"github.com/ansible-semaphore/semaphore/db"
 	"github.com/ansible-semaphore/semaphore/util"
+	"strings"
 )
 
 const emailTemplate = `Subject: Task '{{ .Alias }}' failed
@@ -14,7 +15,7 @@ const emailTemplate = `Subject: Task '{{ .Alias }}' failed
 Task {{ .TaskID }} with template '{{ .Alias }}' has failed!
 Task log: <a href='{{ .TaskURL }}'>{{ .TaskURL }}</a>`
 
-const telegramTemplate = `{"chat_id": "{{ .ChatID }}","text":"<b>{{ .Alias }}</b>\n<b>#{{ .TaskID }}</b> <span color="{{ .TaskColor }}">{{ .TaskResult }}</span> {{ .TaskVersion }} {{ .TaskDescription }}\nby{{ .Author }}","parse_mode":"HTML"}`
+const telegramTemplate = `{"chat_id": "{{ .ChatID }}","parse_mode":"HTML","text":"<code>{{ .Alias }}</code>\n#{{ .TaskID }} <b>{{ .TaskResult }}</b> {{ .TaskVersion }} {{ .TaskDescription }}\nby{{ .Author }}"}`
 type Alert struct {
 	TaskID  string
 	Alias   string
@@ -109,7 +110,7 @@ func (t *task) sendTelegramAlert() {
 		Alias:   t.template.Alias,
 		TaskURL: util.Config.WebHost + "/project/" + strconv.Itoa(t.template.ProjectID),
 		ChatID:  chat_id,
-		TaskResult: t.task.Status,
+		TaskResult: strings.ToUpper(t.task.Status),
 		TaskColor: "red",
 		TaskVersion: ver,
 		TaskDescription: description,
