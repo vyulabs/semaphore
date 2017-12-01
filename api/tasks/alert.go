@@ -5,7 +5,6 @@ import (
 	"html/template"
 	"net/http"
 	"strconv"
-
 	"github.com/ansible-semaphore/semaphore/db"
 	"github.com/ansible-semaphore/semaphore/util"
 )
@@ -15,13 +14,17 @@ const emailTemplate = `Subject: Task '{{ .Alias }}' failed
 Task {{ .TaskID }} with template '{{ .Alias }}' has failed!
 Task log: <a href='{{ .TaskURL }}'>{{ .TaskURL }}</a>`
 
-const telegramTemplate = `{"chat_id": "{{ .ChatID }}","text":"<b>Task {{ .TaskID }} with template '{{ .Alias }}' has failed!</b>\nTask log: <a href='{{ .TaskURL }}'>{{ .TaskURL }}</a>","parse_mode":"HTML"}`
-
+const telegramTemplate = `{"chat_id": "{{ .ChatID }}","text":"<b>{{ .Alias }}</b>\n<b>#{{ .TaskID }}</b> <span color="{{ .TaskColor }}">{{ .TaskResult }}</span> {{ .TaskVersion }} {{ .TaskDescription }}\nby{{ .Author }}","parse_mode":"HTML"}`
 type Alert struct {
 	TaskID  string
 	Alias   string
 	TaskURL string
 	ChatID  string
+	TaskResult string
+	TaskColor string
+	TaskDescription string
+	TaskVersion string
+	Author string
 }
 
 func (t *task) sendMailAlert() {
@@ -79,12 +82,46 @@ func (t *task) sendTelegramAlert() {
 	}
 
 	var telegramBuffer bytes.Buffer
+
+	var ver string
+	if t.task.Ver != nil {
+		ver = *t.task.Ver
+	} else if t.task.BuildTaskID != nil {
+		ver = "build " + strconv.Itoa(*t.task.BuildTaskID)
+	} else {
+		ver = ""
+	}
+
+
+	var description string
+	if t.task.Description != nil {
+		description = "- " + *t.task.Description
+	}
+
+	var author string
+	var user db.User
+	if err := db.Mysql.SelectOne(&user, "select * from user where id=?", t.task.UserID); err == nil {
+		author = user.Name
+	}
+
 	alert := Alert{
 		TaskID:  strconv.Itoa(t.task.ID),
 		Alias:   t.template.Alias,
 		TaskURL: util.Config.WebHost + "/project/" + strconv.Itoa(t.template.ProjectID),
 		ChatID:  chat_id,
+		TaskResult: t.task.Status,
+		TaskColor: "red",
+		TaskVersion: ver,
+		TaskDescription: description,
+		Author: author,
 	}
+
+
+	switch t.task.Status {
+	case "success":
+		alert.TaskColor = "green"
+	}
+
 	tpl := template.New("telegram body template")
 	tpl, err := tpl.Parse(telegramTemplate)
 	err = tpl.Execute(&telegramBuffer, alert)
