@@ -1,14 +1,18 @@
 define(function () {
-	app.registerController('CreateTaskCtrl', ['$scope', '$http', 'Template', 'Project', function ($scope, $http, Template, Project) {
+	app.registerController('CreateTaskCtrl', ['$scope', '$http', 'Template', 'Project', 'Options', function ($scope, $http, Template, Project, Options) {
 		console.log(Template);
 		$scope.task = {};
 		$scope.tpl = Template;
-
+		$scope.options = Options || {};
 
 		if (Template.type === 'deploy' && Template.build_template_id) {
 			$http.get(Project.getURL() + '/templates/' + Template.build_template_id + '/tasks/last').then(function(Builds) {
 				$scope.builds = Builds ? Builds.data.filter(function(build) { return build.status === 'success'; }) : [];
-				$scope.task.build_task_id = $scope.builds[0] ? $scope.builds[0].id : undefined;
+				if ($scope.options.build_task_id) {
+					$scope.task.build_task_id = $scope.options.build_task_id;
+				} else if ($scope.builds[0]) {
+					$scope.task.build_task_id = $scope.builds[0].id;
+				}
 			});
 		}
 

@@ -112,7 +112,7 @@ func AddTask(w http.ResponseWriter, r *http.Request) {
 		if err := db.Mysql.SelectOne(&buildObj, "select * from task where id=?", taskObj.BuildTaskID); err != nil {
 			panic(err)
 		}
-		taskObj.Commit = buildObj.Commit
+		//taskObj.Commit = buildObj.Commit
 		taskObj.Ver = buildObj.Ver
 	}
 

@@ -205,7 +205,7 @@ define(['controllers/projects/taskRunner'], function () {
 			});
 		}
 
-		$scope.run = function (tpl, build_task_id) {
+		$scope.run = function (tpl, options) {
 			$modal.open({
 				templateUrl: '/tpl/projects/createTaskModal.html',
 				controller: 'CreateTaskCtrl',
@@ -215,13 +215,16 @@ define(['controllers/projects/taskRunner'], function () {
 					},
 					Template: function () {
 						return tpl;
+					},
+					Options: function() {
+						return options;
 					}
 				}
 			}).result.then(function (task) {
 				var scope = $rootScope.$new();
 				scope.task = task;
 				scope.project = Project;
-				scope.build_task_id = build_task_id;
+				//scope.build_task_id = build_task_id;
 
 				$modal.open({
 					templateUrl: '/tpl/projects/taskModal.html',
@@ -317,7 +320,7 @@ define(['controllers/projects/taskRunner'], function () {
 			}).result.then(function(res) {
 				switch (res.action) {
 					case 'deploy':
-						$scope.run(template, res.build_task_id);
+						$scope.run(template, res);
 						break;
 					case 'view':
 						var scope = $rootScope.$new();
