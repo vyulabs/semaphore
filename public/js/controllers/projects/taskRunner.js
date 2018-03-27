@@ -41,7 +41,7 @@ define(function () {
 			}).error(function (_, status) {
 				swal('Error', 'error launching task: HTTP ' + status, 'error');
 			});
-		}
+		};
 	}]);
 
 	app.registerController('TaskCtrl', ['$scope', '$http', function ($scope, $http) {

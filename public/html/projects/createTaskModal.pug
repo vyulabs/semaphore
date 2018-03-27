@@ -20,12 +20,17 @@
 		.form-group(ng-if="options.commit != null && options.commit != ''")
 			label.control-label.col-sm-4 Commit
 			.col-sm-6
-				input.form-control(type="text" ng-model="options.commit" readonly)
+				input.form-control(type="text" ng-model="task.commit")
 
 		.form-group
 			label.control-label.col-sm-4 Environment Override
 			.col-sm-6
 				textarea.form-control.monospaced(ng-allow-tab="" rows="5" placeholder="Override playbook environment, *MUST* be valid JSON" ng-model="task.environment")
+
+		.form-group
+			.col-sm-6.col-sm-offset-4: .checkbox: label
+				input(type="checkbox" ng-model="task.use_build_commit")
+				| Debug (<code>-vvvv</code>)
 
 .modal-footer
 	button.btn.btn-default.pull-left(ng-click="$dismiss()") Dismiss
