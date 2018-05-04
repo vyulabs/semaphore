@@ -1,5 +1,5 @@
 define(function () {
-	app.registerController('ProjectInventoryCtrl', ['$scope', '$http', '$uibModal', 'Project', '$rootScope', function ($scope, $http, $modal, Project, $rootScope) {
+	app.registerController('ProjectInventoryCtrl', ['$scope', '$http', '$uibModal', 'Project', '$rootScope', 'SweetAlert', function ($scope, $http, $modal, Project, $rootScope, SweetAlert) {
 		$scope.reload = function () {
 			$http.get(Project.getURL() + '/inventory?sort=name&order=asc').then(function (inventory) {
 				$scope.inventory = inventory.data;
@@ -12,11 +12,11 @@ define(function () {
 			}).catch(function (response) {
 			  var d = response.data;
 				if (!(d && d.inUse)) {
-					swal('error', 'could not delete inventory..', 'error');
+					SweetAlert.swal('error', 'could not delete inventory..', 'error');
 					return;
 				}
 
-				swal({
+				SweetAlert.swal({
 					title: 'Inventory in use',
 					text: d.error,
 					type: 'error',
@@ -27,7 +27,7 @@ define(function () {
 					$http.delete(Project.getURL() + '/inventory/' + inventory.id + '?setRemoved=1').then(function () {
 						$scope.reload();
 					}).catch(function () {
-						swal('error', 'could not delete inventory..', 'error');
+						SweetAlert.swal('error', 'could not delete inventory..', 'error');
 					});
 				});
 			});
@@ -46,7 +46,7 @@ define(function () {
 					.then(function () {
 						$scope.reload();
 					}).catch(function (response) {
-						swal('Error', 'Inventory not added: ' + response.status, 'error');
+						SweetAlert.swal('Error', 'Inventory not added: ' + response.status, 'error');
 					});
 				}, function () {});
 			});
@@ -71,7 +71,7 @@ define(function () {
 					.then(function () {
 						$scope.reload();
 					}).catch(function (response) {
-						swal('Error', 'Inventory not updated: ' + response.status, 'error');
+						SweetAlert.swal('Error', 'Inventory not updated: ' + response.status, 'error');
 					});
 				}, function () {});
 			});
@@ -90,7 +90,7 @@ define(function () {
 				.then(function () {
 					$scope.reload();
 				}).catch(function (response) {
-					swal('Error', 'Inventory not updated: ' + response.status, 'error');
+					SweetAlert.swal('Error', 'Inventory not updated: ' + response.status, 'error');
 				});
 			}, function () {});
 		}

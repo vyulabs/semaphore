@@ -1,5 +1,5 @@
 define(function () {
-	app.registerController('UsersCtrl', ['$scope', '$http', '$uibModal', '$rootScope', function ($scope, $http, $modal, $rootScope) {
+	app.registerController('UsersCtrl', ['$scope', '$http', '$uibModal', '$rootScope', 'SweetAlert', function ($scope, $http, $modal, $rootScope, SweetAlert) {
 		$http.get('/users').then(function (response) {
 			$scope.users = response.users;
 		});
@@ -19,10 +19,10 @@ define(function () {
 					$http.post('/users/' + response.user.id + '/password', {
 						password: _user.password
 					}).catch(function (errorResponse) {
-						swal('Error', 'Setting password failed, API responded with HTTP ' + errorResponse.status, 'error');
+						SweetAlert.swal('Error', 'Setting password failed, API responded with HTTP ' + errorResponse.status, 'error');
 					});
 				}).error(function (response) {
-					swal('Error', 'API responded with HTTP ' + response.status, 'error');
+					SweetAlert.swal('Error', 'API responded with HTTP ' + response.status, 'error');
 				});
 			}, function () {});
 		}

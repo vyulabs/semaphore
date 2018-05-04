@@ -1,5 +1,5 @@
 define(function () {
-	app.registerController('ProjectRepositoriesCtrl', ['$scope', '$http', 'Project', '$uibModal', '$rootScope', function ($scope, $http, Project, $modal, $rootScope) {
+	app.registerController('ProjectRepositoriesCtrl', ['$scope', '$http', 'Project', '$uibModal', '$rootScope', 'SweetAlert', function ($scope, $http, Project, $modal, $rootScope, SweetAlert) {
 		$scope.reload = function () {
 			$http.get(Project.getURL() + '/keys?type=ssh&sort=name&order=asc').then(function (keys) {
 				$scope.sshKeys = keys.data;
@@ -25,11 +25,11 @@ define(function () {
 			}).then(function (response) {
 			  var d = response.data;
 				if (!(d && d.templatesUse)) {
-					swal('error', 'could not delete repository..', 'error');
+					SweetAlert.swal('error', 'could not delete repository..', 'error');
 					return;
 				}
 
-				swal({
+				SweetAlert.swal({
 					title: 'Repository in use',
 					text: d.error,
 					type: 'error',
@@ -40,7 +40,7 @@ define(function () {
 					$http.delete(Project.getURL() + '/repositories/' + repo.id + '?setRemoved=1').then(function () {
 						$scope.reload();
 					}).catch(function () {
-						swal('error', 'could not delete repository..', 'error');
+						SweetAlert.swal('error', 'could not delete repository..', 'error');
 					});
 				});
 			});
@@ -62,7 +62,7 @@ define(function () {
 				$http.put(Project.getURL() + '/repositories/' + repo.id, opts.repo).then(function () {
 					$scope.reload();
 				}).catch(function (response) {
-					swal('Error', 'Repository not updated: ' + response.status, 'error');
+					SweetAlert.swal('Error', 'Repository not updated: ' + response.status, 'error');
 				});
 			}, function () {});
 		}
@@ -79,7 +79,7 @@ define(function () {
 				.then(function () {
 					$scope.reload();
 				}).catch(function (response) {
-					swal('Error', 'Repository not added: ' + response.status, 'error');
+					SweetAlert.swal('Error', 'Repository not added: ' + response.status, 'error');
 				});
 			}, function () {});
 		}
