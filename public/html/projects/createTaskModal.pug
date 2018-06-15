@@ -17,7 +17,7 @@
 				select.form-control(ng-model="task.build_task_id" ng-options="build.id as getBuildTitle(build) disable when build.removed for build in builds")
 					//option(value="") -- Select Build --
 
-		.form-group(ng-if="options.commit != null && options.commit != ''")
+		.form-group(ng-if="task.commit != null && task.commit != ''")
 			label.control-label.col-sm-4 Commit
 			.col-sm-6
 				input.form-control(type="text" ng-model="task.commit")

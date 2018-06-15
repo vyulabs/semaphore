@@ -10,6 +10,7 @@ define(function () {
 				$scope.builds = Builds ? Builds.data.filter(function(build) { return build.status === 'success'; }) : [];
 				if ($scope.options.build_task_id) {
 					$scope.task.build_task_id = $scope.options.build_task_id;
+					$scope.task.commit = $scope.options.commit;
 				} else if ($scope.builds[0]) {
 					$scope.task.build_task_id = $scope.builds[0].id;
 				}
