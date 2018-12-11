@@ -60,7 +60,8 @@ func GetTemplates(w http.ResponseWriter, r *http.Request) {
 			"pt.last_success_build_task_id",
 			"pt.version_template",
 			"pt.last_success_version").
-			From("project__template pt")
+			From("project__template pt").
+			Where("pt.removed = 0")
 
 	switch sort {
 	case "alias", "playbook":
