@@ -100,6 +100,8 @@ func (p *taskPool) blocks(t *task) bool {
 	}
 
 	switch util.Config.ConcurrencyMode {
+	case "all":
+		return false
 	case "project":
 		return p.activeProj[t.projectID] != nil
 	case "node":
