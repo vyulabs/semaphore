@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/ansible-semaphore/semaphore/db"
-	"github.com/castawaylabs/mulekick"
+	"github.com/vyulabs/mulekick"
 	"github.com/gorilla/context"
 	"github.com/gorilla/mux"
 )

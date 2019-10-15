@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"github.com/ansible-semaphore/semaphore/db"
 	"github.com/ansible-semaphore/semaphore/util"
-	"github.com/castawaylabs/mulekick"
+	"github.com/vyulabs/mulekick"
 	"github.com/gorilla/context"
 	"github.com/masterminds/squirrel"
 	"path/filepath"

@@ -8,7 +8,7 @@ import (
 	"github.com/ansible-semaphore/semaphore/api/sockets"
 	"github.com/ansible-semaphore/semaphore/api/tasks"
 	"github.com/ansible-semaphore/semaphore/util"
-	"github.com/castawaylabs/mulekick"
+	"github.com/vyulabs/mulekick"
 	"github.com/gorilla/mux"
 	"github.com/russross/blackfriday"
 )
