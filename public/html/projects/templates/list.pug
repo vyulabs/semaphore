@@ -7,11 +7,12 @@ table.table.table-hover
 	thead: tr
 		th Alias
 		th Version
-		th Playbook
+		//th Playbook
 		//th SSH Key
 		th Inventory
 		th Environment
-		th Repository
+		th Build
+		//th Repository
 		th &nbsp;
 	tbody: tr.list__row(ng-repeat="tpl in templates"
 						ng-click="showTasks(tpl)"
@@ -20,11 +21,12 @@ table.table.table-hover
 						ng-class="{'list__row--with-separator' : tpl.isNewEnvironment}")
 		td.list__column.monospaced {{ tpl.alias }}
 		td {{ getBuildID(tpl) }}
-		td {{ tpl.playbook }}
+		//td {{ tpl.playbook }}
 		//td {{ sshKeysAssoc[tpl.ssh_key_id].name }}
 		td {{ inventoryAssoc[tpl.inventory_id].name }}
 		td {{ environmentAssoc[tpl.environment_id].name }}
-		td {{ reposAssoc[tpl.repository_id].name }}
+		td {{ getTemplateAlias(tpl.build_template_id) || '-' }}
+		//td {{ reposAssoc[tpl.repository_id].name }}
 		td: .pull-right
 			button.btn.btn-primary.btn-xs(ng-click="update(tpl); $event.stopPropagation();") edit
 			button.btn.btn-default.btn-xs(ng-if="!tpl.hidden" ng-click="hideTemplate(tpl); $event.stopPropagation();" style="margin-left: 5px;") hide

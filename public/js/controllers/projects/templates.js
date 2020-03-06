@@ -115,11 +115,21 @@ define(['controllers/projects/taskRunner'], function () {
 			var opts = spaceIndex === -1 ? null : str.substring(spaceIndex + 1);
 			return {
 				env: pathParts[0],
-					role: pathParts[1] || '',
-					inventory: pathParts[2] || '',
-					options: opts ? opts.split(' ') : []
-				};
+				role: pathParts[1] || '',
+				inventory: pathParts[2] || '',
+				options: opts ? opts.split(' ') : []
+			};
+		}
+
+		$scope.getTemplateAlias = function (templateId) {
+			if (!templateId) {
+				return undefined;
 			}
+			var template = ($scope.templates || []).find(function (t) {
+				return t.id === templateId;
+			});
+			return template ? template.alias : undefined;
+		};
 
 		$scope.reload = function () {
 			$http.get(Project.getURL() + '/templates?sort=alias&order=asc').success(function (templates) {
