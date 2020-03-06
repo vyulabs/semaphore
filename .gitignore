@@ -13,3 +13,5 @@ caddyfile
 
 cli/semaphore_*
 util/bindata.go
+
+package-lock.json
