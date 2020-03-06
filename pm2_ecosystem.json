@@ -1,0 +1,16 @@
+{
+  "apps" : [{
+    "name"         : "semaphore",
+    "interpreter"  : "none",
+    "watch"        : false,
+    "script"       : "cli/semaphore_linux_amd64",
+    "cwd"          : ".",
+    "max_restarts" : 2147483647,
+    "min_uptime"   : "5s",
+    "merge_logs"   : true,
+    "args": [
+      "-config",
+      "config.json"
+    ]
+  }]
+}
