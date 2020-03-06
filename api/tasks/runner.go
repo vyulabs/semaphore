@@ -450,7 +450,7 @@ func (t *task) getPlaybookArgs() ([]string, error) {
 		playbookName = t.template.Playbook
 	}
 
-	var inventory string;
+	var inventory string
 	switch t.inventory.Type {
 	case "file":
 		inventory = t.inventory.Inventory
@@ -483,6 +483,14 @@ func (t *task) getPlaybookArgs() ([]string, error) {
 		}
 
 		envJSON := strings.Replace(t.environment.JSON, "{{ semaphore_task_id }}", strconv.Itoa(t.task.ID), -1)
+
+		var user db.User
+		if err := db.Mysql.SelectOne(&user, "select * from user where id = ?", t.task.UserID); err != nil {
+			panic(err)
+		}
+
+		envJSON = strings.Replace(envJSON, "{{ username }}", user.Username, -1)
+
 		if t.task.Ver != nil {
 			envJSON = strings.Replace(envJSON, "{{ semaphore_task_version }}", *t.task.Ver, -1)
 			envJSON = strings.Replace(envJSON, "{{ semaphore_build_task_version }}", *t.task.Ver, -1)
