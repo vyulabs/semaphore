@@ -491,6 +491,10 @@ func (t *task) getPlaybookArgs() ([]string, error) {
 
 		envJSON = strings.Replace(envJSON, "{{ username }}", user.Username, -1)
 
+		if t.task.Description != nil {
+			envJSON = strings.Replace(envJSON, "{{ semaphore_comment }}", *t.task.Description, -1)
+		}
+
 		if t.task.Ver != nil {
 			envJSON = strings.Replace(envJSON, "{{ semaphore_task_version }}", *t.task.Ver, -1)
 			envJSON = strings.Replace(envJSON, "{{ semaphore_build_task_version }}", *t.task.Ver, -1)
