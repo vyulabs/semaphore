@@ -493,6 +493,8 @@ func (t *task) getPlaybookArgs() ([]string, error) {
 
 		if t.task.Description != nil {
 			envJSON = strings.Replace(envJSON, "{{ semaphore_comment }}", *t.task.Description, -1)
+		} else {
+			envJSON = strings.Replace(envJSON, "{{ semaphore_comment }}", "", -1)
 		}
 
 		if t.task.Ver != nil {
